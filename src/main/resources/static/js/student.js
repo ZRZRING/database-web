@@ -7,42 +7,45 @@ new Vue({
         form: {id: null, name: "", deptName: "", totalCredits: null},
     },
     methods: {
-        fetchStudent() {
-            axios
-                .get("http://localhost:8080/api/students")
+        apiRequest(method, url, data = null) {
+            const config = {
+                method: method,
+                url: url,
+                data: data,
+            };
+            return axios(config)
                 .then((response) => {
-                    this.students = response.data;
                     this.errorMessage = "";
+                    return response.data;
                 })
                 .catch((error) => {
-                    this.errorMessage = "无法获取学生列表，请检查后端服务";
+                    if (error.response && error.response.data && error.response.data.message) {
+                        this.errorMessage = `请求失败: ${error.response.data.message}`;
+                    } else {
+                        this.errorMessage = "请求失败: 请检查后端服务";
+                    }
                     console.error(error);
+                    throw error;
+                });
+        },
+        fetchStudent() {
+            this.apiRequest("get", "http://localhost:8080/api/students")
+                .then((data) => {
+                    this.students = data;
                 });
         },
         modifyStudent() {
-            axios
-                .put(`http://localhost:8080/api/students/${this.form.id}`, this.form)
+            this.apiRequest("put", `http://localhost:8080/api/students/${this.form.id}`, this.form)
                 .then(() => {
                     this.fetchStudent();
                     this.resetForm();
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法保存学生信息，请检查后端服务";
-                    console.error(error);
                 });
         },
         insertStudent() {
-            axios
-                .post("http://localhost:8080/api/students", this.form)
+            this.apiRequest("post", "http://localhost:8080/api/students", this.form)
                 .then(() => {
                     this.fetchStudent();
                     this.resetForm();
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法添加学生，请检查后端服务";
-                    console.error(error);
                 });
         },
         saveStudent() {
@@ -53,25 +56,19 @@ new Vue({
             }
         },
         editStudent(student) {
-            this.form = {...student};
+            this.form = { ...student };
             this.editMode = true;
         },
         deleteStudent(id) {
-            axios
-                .delete(`http://localhost:8080/api/students/${id}`)
+            this.apiRequest("delete", `http://localhost:8080/api/students/${id}`)
                 .then(() => {
                     this.fetchStudent();
                     this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法删除学生，请检查后端服务";
-                    console.error(error);
                 });
         },
         resetForm() {
             this.editMode = false;
-            this.errorMessage = "";
-            this.form = {id: null, name: "", deptName: "", totalCredits: null};
+            this.form = { id: null, name: "", deptName: "", totalCredits: null };
         },
     },
     mounted() {

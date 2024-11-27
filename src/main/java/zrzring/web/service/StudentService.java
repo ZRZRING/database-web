@@ -54,11 +54,11 @@ public class StudentService {
     }
 
     private Integer findNextAvailableId() {
-        List<Integer> usedIds = studentRepository.findAllByOrderByIdAsc();
+        List<Student> Students = studentRepository.findAllByOrderByIdAsc();
 
         int nextId = 1;
-        for (Integer id : usedIds) {
-            if (id != nextId) {
+        for (Student x : Students) {
+            if (x.getId() != nextId) {
                 break;
             }
             nextId++;
