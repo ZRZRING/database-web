@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>学生管理</title>
+    <script src="../js/student.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="../css/branch.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="app">
+    <h1 id="header">学生管理</h1>
+
+    <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+
+    <table id="show-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>院系</th>
+            <th>学分</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr :key="student.id" v-for="student in students">
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.deptName }}</td>
+            <td>{{ student.totalCredits }}</td>
+            <td>
+                <button @click="editStudent(student)" class="edit-btn">编辑</button>
+                <button @click="deleteStudent(student.id)" class="delete-btn">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form @submit.prevent="saveStudent" id="modify-form">
+        <h2 id="form-header">{{ editMode ? '编辑学生' : '添加学生' }}</h2>
+        <label for="name">姓名:</label><br/>
+        <input id="name" required type="text" v-model="form.name"/><br/>
+        <label for="deptName">班级:</label><br/>
+        <input id="deptName" required type="text" v-model="form.deptName"/><br/>
+        <div id="button-container">
+            <button id="submit-button" type="submit">{{ editMode ? '保存修改' : '添加学生' }}</button>
+            <button @click="resetForm" id="cancel-button" type="button">取消</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

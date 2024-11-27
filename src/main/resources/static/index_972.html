@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Vue 管理系统</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link href="./css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="app">
+    <div id="menu-bar">
+        <div
+                :class="{ active: currentView === item.url }"
+                :key="item.id"
+                @click="switchView(item.url)"
+                class="menu-item"
+                v-for="item in menuItems"
+        >
+            {{ item.name }}
+        </div>
+    </div>
+
+    <div id="content-view">
+        <iframe :src="currentView"></iframe>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            menuItems: [
+                {id: 'department', name: '部门管理', url: 'branch/department.html'},
+                {id: 'student', name: '学生管理', url: 'branch/student.html'},
+                // { id: 'teacher', name: '教师管理', url: 'teacher.html' },
+                // { id: 'course', name: '课程管理', url: 'course.html' },
+                // { id: 'enrollment', name: '选课管理', url: 'enrollment.html' },
+                // { id: 'grade', name: '成绩登录', url: 'grade.html' },
+                // { id: 'statistics', name: '统计分析', url: 'statistics.html' },
+            ],
+            currentView: 'branch/student.html',
+        },
+        methods: {
+            switchView(viewUrl) {
+                this.currentView = viewUrl;
+            },
+        },
+    });
+</script>
+</body>
+</html>
