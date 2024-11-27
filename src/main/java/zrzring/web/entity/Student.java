@@ -13,10 +13,10 @@ public class Student {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "dept_name", nullable = false, length = 100)
+    @Column(name = "dept_name", nullable = false)
     private String deptName;
 
     @Column(name = "tot_cred", nullable = false)

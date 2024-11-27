@@ -15,7 +15,7 @@
 
     <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
 
-    <table id="show-table">
+    <table>
         <thead>
         <tr>
             <th>院系名称</th>
@@ -37,7 +37,7 @@
         </tbody>
     </table>
 
-    <form @submit.prevent="saveDepartment" id="modify-form">
+    <form @submit.prevent="saveDepartment">
         <h2 id="form-header">{{ editMode ? '编辑院系' : '添加院系' }}</h2>
         <label for="deptName">院系名称:</label><br/>
         <input id="deptName" required type="text" v-model="form.deptName"/><br/>

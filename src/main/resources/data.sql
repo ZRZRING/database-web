@@ -1,10 +1,30 @@
-# create TABLE department(
-#     dept_name varchar(100) primary key,
-#     building varchar(100),
-#     budget long
-# )
+create table department
+(
+    dept_name varchar(255) not null
+        primary key,
+    building  varchar(255) not null,
+    budget    bigint       not null
+);
 
-insert into department
-values
-    ('信息与电气工程学院', '逸夫楼', 3500000),
-    ('集成电路学院', '逸夫楼', 2500000)
+create table instructor
+(
+    id        int          not null
+        primary key,
+    name      varchar(255) not null,
+    dept_name varchar(255) not null,
+    salary    int          not null,
+    constraint instructor_dept_name
+        foreign key (dept_name) references department (dept_name)
+);
+
+create table student
+(
+    id        int          not null
+        primary key,
+    name      varchar(255) not null,
+    dept_name varchar(255) not null,
+    tot_cred  int          not null,
+    constraint student_dept_name
+        foreign key (dept_name) references department (dept_name)
+);
+

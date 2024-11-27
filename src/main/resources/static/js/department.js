@@ -4,69 +4,58 @@ new Vue({
         departments: [],
         editMode: false,
         errorMessage: "",
+        apiUrl: "http://localhost:8080/api/departments",
         form: {deptName: "", building: "", budget: null},
     },
     methods: {
-        fetchDepartment() {
-            axios
-                .get("http://localhost:8080/api/departments")
-                .then((response) => {
-                    this.departments = response.data;
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法获取院系列表，请检查后端服务";
-                    console.error(error);
+        async apiRequest(method, url, data = null) {
+            try {
+                const response = await axios({ method, url, data });
+                this.errorMessage = "";
+                return response.data;
+            } catch (error) {
+                this.errorMessage = error.response?.data?.message || "请求失败：未知错误";
+                console.error(error);
+                throw error;
+            }
+        },
+        handleDepartmentRequest(method, url, data = null) {
+            this.apiRequest(method, url, data)
+                .then((data) => {
+                    if (method === "get") {
+                        this.departments = data;
+                    } else {
+                        this.fetchDepartments();
+                        this.resetForm();
+                    }
                 });
         },
-        modifyDepartment() {
-            axios
-                .put(`http://localhost:8080/api/departments/${this.form.deptName}`, this.form)
-                .then(() => {
-                    this.fetchDepartment();
-                    this.resetForm();
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法保存院系信息，请检查后端服务";
-                    console.error(error);
-                });
+        fetchDepartments() {
+            const url = this.apiUrl;
+            this.handleDepartmentRequest("get", url);
         },
-        insertDepartment() {
-            axios
-                .post("http://localhost:8080/api/departments", this.form)
-                .then(() => {
-                    this.fetchDepartment();
-                    this.resetForm();
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法添加院系，请检查后端服务";
-                    console.error(error);
-                });
+        createDepartment() {
+            const url = this.apiUrl;
+            this.handleDepartmentRequest("post", url, this.form);
+        },
+        updateDepartment() {
+            const url = `${this.apiUrl}/${this.form.id}`;
+            this.handleDepartmentRequest("put", url, this.form);
+        },
+        deleteDepartment(id) {
+            const url = `${this.apiUrl}/${id}`;
+            this.handleDepartmentRequest("delete", url);
         },
         saveDepartment() {
             if (this.editMode) {
-                this.modifyDepartment();
+                this.updateDepartment(this.form.id)
             } else {
-                this.insertDepartment();
+                this.createDepartment();
             }
         },
-        editDepartment(department) {
-            this.form = {...department};
+        editDepartment(student) {
+            this.form = { ...student };
             this.editMode = true;
-        },
-        deleteDepartment(deptName) {
-            axios
-                .delete(`http://localhost:8080/api/departments/${deptName}`)
-                .then(() => {
-                    this.fetchDepartments();
-                    this.errorMessage = "";
-                })
-                .catch((error) => {
-                    this.errorMessage = "无法删除院系，请检查后端服务";
-                    console.error(error);
-                });
         },
         resetForm() {
             this.editMode = false;
@@ -75,6 +64,6 @@ new Vue({
         },
     },
     mounted() {
-        this.fetchDepartment();
+        this.fetchDepartments();
     },
 });

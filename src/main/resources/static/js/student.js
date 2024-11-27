@@ -4,74 +4,66 @@ new Vue({
         students: [],
         editMode: false,
         errorMessage: "",
-        form: {id: null, name: "", deptName: "", totalCredits: null},
+        apiUrl: "http://localhost:8080/api/students",
+        form: { id: null, name: "", deptName: "", totalCredits: null },
     },
     methods: {
-        apiRequest(method, url, data = null) {
-            const config = {
-                method: method,
-                url: url,
-                data: data,
-            };
-            return axios(config)
-                .then((response) => {
-                    this.errorMessage = "";
-                    return response.data;
-                })
-                .catch((error) => {
-                    if (error.response && error.response.data && error.response.data.message) {
-                        this.errorMessage = `请求失败: ${error.response.data.message}`;
-                    } else {
-                        this.errorMessage = "请求失败: 请检查后端服务";
-                    }
-                    console.error(error);
-                    throw error;
-                });
+        async apiRequest(method, url, data = null) {
+            try {
+                const response = await axios({ method, url, data });
+                this.errorMessage = "";
+                return response.data;
+            } catch (error) {
+                this.errorMessage = error.response?.data?.message || "请求失败: 未知错误";
+                console.error(error);
+                throw error;
+            }
         },
-        fetchStudent() {
-            this.apiRequest("get", "http://localhost:8080/api/students")
+        handleStudentRequest(method, url, data = null) {
+            this.apiRequest(method, url, data)
                 .then((data) => {
-                    this.students = data;
+                    if (method === "get") {
+                        this.students = data;
+                    } else {
+                        this.fetchStudents();
+                        this.resetForm();
+                    }
                 });
         },
-        modifyStudent() {
-            this.apiRequest("put", `http://localhost:8080/api/students/${this.form.id}`, this.form)
-                .then(() => {
-                    this.fetchStudent();
-                    this.resetForm();
-                });
+        fetchStudents() {
+            const url = this.apiUrl;
+            this.handleStudentRequest("get", url);
         },
-        insertStudent() {
-            this.apiRequest("post", "http://localhost:8080/api/students", this.form)
-                .then(() => {
-                    this.fetchStudent();
-                    this.resetForm();
-                });
+        createStudent() {
+            const url = this.apiUrl;
+            this.handleStudentRequest("post", url, this.form);
+        },
+        updateStudent() {
+            const url = `${this.apiUrl}/${this.form.id}`;
+            this.handleStudentRequest("put", url, this.form);
+        },
+        deleteStudent(id) {
+            const url = `${this.apiUrl}/${id}`;
+            this.handleStudentRequest("delete", url);
         },
         saveStudent() {
             if (this.editMode) {
-                this.modifyStudent();
+                this.updateStudent(this.form.id)
             } else {
-                this.insertStudent();
+                this.createStudent();
             }
         },
         editStudent(student) {
             this.form = { ...student };
             this.editMode = true;
         },
-        deleteStudent(id) {
-            this.apiRequest("delete", `http://localhost:8080/api/students/${id}`)
-                .then(() => {
-                    this.fetchStudent();
-                    this.errorMessage = "";
-                });
-        },
         resetForm() {
             this.editMode = false;
+            this.errorMessage = "";
             this.form = { id: null, name: "", deptName: "", totalCredits: null };
         },
     },
     mounted() {
-        this.fetchStudent();
+        this.fetchStudents();
     },
 });

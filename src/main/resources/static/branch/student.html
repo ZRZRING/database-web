@@ -15,7 +15,7 @@
 
     <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
 
-    <table id="show-table">
+    <table>
         <thead>
         <tr>
             <th>ID</th>
@@ -39,11 +39,11 @@
         </tbody>
     </table>
 
-    <form @submit.prevent="saveStudent" id="modify-form">
+    <form @submit.prevent="saveStudent">
         <h2 id="form-header">{{ editMode ? '编辑学生' : '添加学生' }}</h2>
         <label for="name">姓名:</label><br/>
         <input id="name" required type="text" v-model="form.name"/><br/>
-        <label for="deptName">班级:</label><br/>
+        <label for="deptName">学院:</label><br/>
         <input id="deptName" required type="text" v-model="form.deptName"/><br/>
         <div id="button-container">
             <button id="submit-button" type="submit">{{ editMode ? '保存修改' : '添加学生' }}</button>
