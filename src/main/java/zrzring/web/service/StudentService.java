@@ -1,7 +1,5 @@
 package zrzring.web.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import zrzring.web.entity.Student;
@@ -16,12 +14,11 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final DeptRepository deptRepository;
 
-    @PersistenceContext
-    private final EntityManager entityManager;
-
-    public StudentService(StudentRepository studentRepository, EntityManager entityManager, DeptRepository deptRepository) {
+    public StudentService(
+            StudentRepository studentRepository,
+            DeptRepository deptRepository
+    ) {
         this.studentRepository = studentRepository;
-        this.entityManager = entityManager;
         this.deptRepository = deptRepository;
     }
 

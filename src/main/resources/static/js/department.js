@@ -19,7 +19,7 @@ new Vue({
                 throw error;
             }
         },
-        handleDepartmentRequest(method, url, data = null) {
+        handleRequest(method, url, data = null) {
             this.apiRequest(method, url, data)
                 .then((data) => {
                     if (method === "get") {
@@ -32,19 +32,19 @@ new Vue({
         },
         fetchDepartments() {
             const url = this.apiUrl;
-            this.handleDepartmentRequest("get", url);
+            this.handleRequest("get", url);
         },
         createDepartment() {
             const url = this.apiUrl;
-            this.handleDepartmentRequest("post", url, this.form);
+            this.handleRequest("post", url, this.form);
         },
         updateDepartment() {
             const url = `${this.apiUrl}/${this.form.id}`;
-            this.handleDepartmentRequest("put", url, this.form);
+            this.handleRequest("put", url, this.form);
         },
         deleteDepartment(id) {
             const url = `${this.apiUrl}/${id}`;
-            this.handleDepartmentRequest("delete", url);
+            this.handleRequest("delete", url);
         },
         saveDepartment() {
             if (this.editMode) {
@@ -53,8 +53,8 @@ new Vue({
                 this.createDepartment();
             }
         },
-        editDepartment(student) {
-            this.form = { ...student };
+        editDepartment(department) {
+            this.form = { ...department };
             this.editMode = true;
         },
         resetForm() {

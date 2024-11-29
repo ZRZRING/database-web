@@ -14,12 +14,10 @@ import java.util.List;
 public class DeptService {
     private final DeptRepository deptRepository;
 
-    @PersistenceContext
-    private final EntityManager entityManager;
-
-    public DeptService(DeptRepository deptRepository, EntityManager entityManager) {
+    public DeptService(
+            DeptRepository deptRepository
+    ) {
         this.deptRepository = deptRepository;
-        this.entityManager = entityManager;
     }
 
     public List<Department> getAllDept() {

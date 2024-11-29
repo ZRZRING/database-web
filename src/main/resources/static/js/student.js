@@ -19,7 +19,7 @@ new Vue({
                 throw error;
             }
         },
-        handleStudentRequest(method, url, data = null) {
+        handleRequest(method, url, data = null) {
             this.apiRequest(method, url, data)
                 .then((data) => {
                     if (method === "get") {
@@ -32,19 +32,19 @@ new Vue({
         },
         fetchStudents() {
             const url = this.apiUrl;
-            this.handleStudentRequest("get", url);
+            this.handleRequest("get", url);
         },
         createStudent() {
             const url = this.apiUrl;
-            this.handleStudentRequest("post", url, this.form);
+            this.handleRequest("post", url, this.form);
         },
         updateStudent() {
             const url = `${this.apiUrl}/${this.form.id}`;
-            this.handleStudentRequest("put", url, this.form);
+            this.handleRequest("put", url, this.form);
         },
         deleteStudent(id) {
             const url = `${this.apiUrl}/${id}`;
-            this.handleStudentRequest("delete", url);
+            this.handleRequest("delete", url);
         },
         saveStudent() {
             if (this.editMode) {

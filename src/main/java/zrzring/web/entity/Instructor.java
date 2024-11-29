@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "student", schema = "university")
-public class Student {
+@Table(name = "instructor", schema = "university")
+public class Instructor {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -25,6 +25,6 @@ public class Student {
     @Column(name = "dept_name", nullable = false)
     private String deptName;
 
-    @Column(name = "tot_cred", nullable = false)
-    private Integer totalCredits;
+    @Column(name = "salary", nullable = false)
+    private Integer salary;
 }
