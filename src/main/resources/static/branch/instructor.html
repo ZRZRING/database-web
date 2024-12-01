@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>教授管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/instructor.js" defer></script>
+    <link href="../css/branch.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="app">
+    <h1 id="header">教授管理</h1>
+
+    <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>院系</th>
+            <th>薪水</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr :key="instructor.id" v-for="instructor in instructors">
+            <td>{{ instructor.id }}</td>
+            <td>{{ instructor.name }}</td>
+            <td>{{ instructor.deptName }}</td>
+            <td>{{ instructor.salary }}</td>
+            <td>
+                <button @click="editInstructor(instructor)" class="edit-btn">编辑</button>
+                <button @click="deleteInstructor(instructor.id)" class="delete-btn">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form @submit.prevent="saveInstructor">
+        <h2 id="form-header">{{ editMode ? '编辑教授' : '添加教授' }}</h2>
+        <label for="name">姓名:</label><br/>
+        <input id="name" required type="text" v-model="form.name"/><br/>
+        <label for="deptName">学院:</label><br/>
+        <input id="deptName" required type="text" v-model="form.deptName"/><br/>
+        <label for="salary">薪水:</label><br/>
+        <input id="salary" required type="text" v-model="form.salary"/><br/>
+        <div id="button-container">
+            <button id="submit-button" type="submit">{{ editMode ? '保存修改' : '添加教授' }}</button>
+            <button @click="resetForm" id="cancel-button" type="button">取消</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

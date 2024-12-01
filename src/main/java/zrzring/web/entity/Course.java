@@ -14,19 +14,19 @@ import java.math.BigDecimal;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "student", schema = "university")
-public class Student {
+@Table(name = "course", schema = "university")
+public class Course {
 
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "title", nullable = false)
+    private String title;
 
     @Column(name = "dept_name", nullable = false)
     private String deptName;
 
-    @Column(name = "tot_cred", nullable = false)
-    private BigDecimal totalCredits;
+    @Column(name = "credits", nullable = false)
+    private BigDecimal credits;
 }

@@ -1,4 +1,4 @@
-package zrzring.web.controller;
+package zrzring.web.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

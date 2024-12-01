@@ -6,6 +6,7 @@ import zrzring.web.entity.Student;
 import zrzring.web.repository.DeptRepository;
 import zrzring.web.repository.StudentRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class StudentService {
     @Transactional
     public Student saveStudent(Student student) {
         if (student.getTotalCredits() == null) {
-            student.setTotalCredits(0);
+            student.setTotalCredits(new BigDecimal("0.0"));
         }
         if (student.getId() == null) {
             Integer newId = findNextAvailableId();

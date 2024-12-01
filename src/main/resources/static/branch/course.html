@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>课程管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../js/course.js" defer></script>
+    <link href="../css/branch.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="app">
+    <h1 id="header">课程管理</h1>
+
+    <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>标题</th>
+            <th>院系</th>
+            <th>学分</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr :key="course.id" v-for="course in courses">
+            <td>{{ course.id }}</td>
+            <td>{{ course.title }}</td>
+            <td>{{ course.deptName }}</td>
+            <td>{{ course.credits }}</td>
+            <td>
+                <button @click="editCourse(course)" class="edit-btn">编辑</button>
+                <button @click="deleteCourse(course.id)" class="delete-btn">删除</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form @submit.prevent="saveCourse">
+        <h2 id="form-header">{{ editMode ? '编辑课程' : '添加课程' }}</h2>
+        <label for="title">标题:</label><br/>
+        <input id="title" required type="text" v-model="form.title"/><br/>
+        <label for="deptName">学院:</label><br/>
+        <input id="deptName" required type="text" v-model="form.deptName"/><br/>
+        <label for="credits">学分:</label><br/>
+        <input id="credits" required type="text" v-model="form.credits"/><br/>
+        <div id="button-container">
+            <button id="submit-button" type="submit">{{ editMode ? '保存修改' : '添加课程' }}</button>
+            <button @click="resetForm" id="cancel-button" type="button">取消</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
