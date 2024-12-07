@@ -18,12 +18,15 @@ import java.math.BigDecimal;
 public class Enrollment {
 
     @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
     @Column(name = "sid", nullable = false)
     private Integer sid;
 
     @Column(name = "cid", nullable = false)
     private Integer cid;
 
-    @Column(name = "grade", nullable = false)
+    @Column(name = "grade")
     private BigDecimal grade;
 }

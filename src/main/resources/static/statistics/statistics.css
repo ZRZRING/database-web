@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+#header {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+#error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+#canvas {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+canvas {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    #canvas {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    canvas {
+        width: 100% !important;
+    }
+}

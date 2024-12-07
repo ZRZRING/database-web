@@ -28,5 +28,5 @@ public class Student {
     private String deptName;
 
     @Column(name = "tot_cred", nullable = false)
-    private BigDecimal totalCredits;
+    private BigDecimal totalCredits = BigDecimal.ZERO;
 }

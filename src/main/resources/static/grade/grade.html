@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>成绩管理</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="grade.js" defer></script>
+    <link href="../css/branch.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="app">
+    <h1 id="header">成绩管理</h1>
+
+    <div class="error" id="error-message" v-if="errorMessage">{{ errorMessage }}</div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>课程</th>
+            <th>成绩</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr :key="enrollment.id" v-for="enrollment in enrollments">
+            <td>{{ enrollment.studentName }}</td>
+            <td>{{ enrollment.courseTitle }}</td>
+            <td>
+                <input id="score-input"
+                       v-if="isEditing(enrollment)"
+                       type="number"
+                       v-model="tempGrades[enrollment.id]"
+                       required>
+                <span v-else>{{ enrollment.grade }}</span>
+            </td>
+            <td>
+                <button id="submit-button" @click="submitGrade(enrollment)">
+                    {{ enrollment.grade === null ? '录入成绩' : '修改成绩' }}
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
